@@ -11,7 +11,8 @@ username = input("Enter your instagram username: ")
 password= getpass.getpass("Enter your password: ")
 driver = webdriver.Firefox()
 driver.implicitly_wait(5)
-
+follow = "followers"
+f = "following"
 try:
     driver.get("https://www.instagram.com/accounts/login/")
     time.sleep(2)
@@ -38,19 +39,23 @@ try:
         print("Profile page opened!")
 
         followers = WebDriverWait(driver, 15).until(
-    EC.element_to_be_clickable((By.XPATH, "//a[contains(@href, '/{}/following/')]".format(username)))
+    EC.element_to_be_clickable((By.XPATH,"//a[contains(@href, '/{}/followers/')]".format(username) ))
 )
-        print("we found the follower list")
+        print("Followers list opened!")
+        driver.execute_script("arguments[0].scrollIntoView();", followers)
+        time.sleep(1)  # Small delay before clicking
+        driver.execute_script("arguments[0].click();", followers)
+        
 
         following = WebDriverWait(driver, 15).until(
-            EC.presence_of_element_located((By.XPATH, "//a[contains(@href, '/{}/following/')]".format(username)))
+            EC.element_to_be_clickable((By.XPATH, "//a[contains(@href, '/{}/following/')]".format(username)))
         )
         print("Following list opened!")
 
     except Exception as e:
         print(e)
-        driver.close()
 
 except Exception as e:
     print("Wrong username or password!")
     driver.close()
+   
