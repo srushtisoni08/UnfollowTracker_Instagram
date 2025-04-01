@@ -64,11 +64,11 @@ try:
             if len(follower_list) == (number_of_follower) or len(follower_list) > (number_of_follower):
                 break
 
-        print("\nFollowers:")
-        for follower in follower_list:
-            print(follower.text)
         print("follower list is complete")
         time.sleep(1)
+
+        close_button = WebDriverWait(driver,15).until(EC.element_to_be_clickable((By.XPATH,"//div[@class = '_abm0']")))
+        close_button.click()
 
         following = WebDriverWait(driver, 15).until(
             EC.element_to_be_clickable((By.XPATH, "//a[contains(@href, '/{}/following/')]".format(username)))
@@ -88,9 +88,17 @@ try:
             if len(following_list) == (number_of_following) or len(following_list) > (number_of_following):
                 break
 
-        print("\nFollowing:")
-        for f in following_list:
-            print(f.text)
+        print("following list complete")
+        only_u_follow = list(set(following_list.text)-set(follower_list.text))
+        only_they_follow = list(set(follower_list.text)-set(following_list.text))
+        print("Insta id only followed by you they do not follow back are: ")
+        for i in only_u_follow:
+            print(i.text)
+
+        print("Insta id you do not follow back are: ")
+        for j in only_they_follow:
+            print(j.text)
+
 
     except Exception as e:
         print(e)
@@ -98,4 +106,3 @@ try:
 except Exception as e:
     print("Wrong username or password!")
     driver.close()
-
