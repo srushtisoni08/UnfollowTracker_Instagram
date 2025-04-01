@@ -89,10 +89,12 @@ try:
         following_list = []
         print(f"number of following: {number_of_following}")
         following_list = fetch_following_people()
-        while len(following_list) != number_of_following:
+        
+        while len(following_list) < number_of_following:
             following_list = fetch_following_people()
-            time.sleep(1)
-            if len(following_list) == (number_of_following) or len(following_list) > (number_of_following):
+            print(f"fetching...{len(following_list)}")
+            time.sleep(5)
+            if len(following_list) > (number_of_following-10):
                 break
 
         print("following list complete")
