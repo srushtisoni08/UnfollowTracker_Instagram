@@ -12,11 +12,18 @@ password= getpass.getpass("Enter your password: ")
 driver = webdriver.Firefox()
 driver.implicitly_wait(5)
 
+def get_follower(a_names, b_names):
+
+    only_u_follow = list(set(b_names) - set(a_names))
+    only_they_follow = list(set(a_names) - set(b_names))
+
+    return only_u_follow, only_they_follow
+
 def fetch_follower():
-    return driver.find_elements(By.XPATH, "//span[contains(@class, '_ap3a')]")
+    return [user.text.strip() for user in driver.find_elements(By.XPATH, "//span[contains(@class, '_ap3a')]") if user.text.strip()]
 
 def fetch_following_people():
-    return driver.find_elements(By.XPATH, "//span[contains(@class, '_ap3a _aaco _aacw _aacx _aad7 _aade')]")
+    return [user.text.strip() for user in driver.find_elements(By.XPATH, "//span[contains(@class, '_ap3a _aaco _aacw _aacx _aad7 _aade')]") if user.text.strip()]
 
 try:
     driver.get("https://www.instagram.com/accounts/login/")
@@ -89,16 +96,16 @@ try:
                 break
 
         print("following list complete")
-        only_u_follow = list(set(following_list.text)-set(follower_list.text))
-        only_they_follow = list(set(follower_list.text)-set(following_list.text))
+        WebDriverWait(driver, 15).until(EC.element_to_be_clickable((By.XPATH, "//div[@class='_abm0']"))).click()
+        u_follow , they_follow = get_follower(follower_list,following_list)
+
         print("Insta id only followed by you they do not follow back are: ")
-        for i in only_u_follow:
-            print(i.text)
+        for i in u_follow:
+            print(i)
 
-        print("Insta id you do not follow back are: ")
-        for j in only_they_follow:
-            print(j.text)
-
+        print("\nInsta id you do not follow back are: ")
+        for j in they_follow:
+            print(j)
 
     except Exception as e:
         print(e)
