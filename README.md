@@ -18,7 +18,7 @@ Enter your Instagram username and password when prompted.
 - Frequent use may trigger Instagram’s security checks.
 
 ## Disclaimer
-Educational use only. Use at your own risk.
+Educational use only. 
 
 ## License
 This project is licensed under the MIT License.
